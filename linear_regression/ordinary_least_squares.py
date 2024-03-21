@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #reading data from the dataset
-data_from_artificial1d = np.genfromtxt(u"/home/rafaelfacundo/Documents/machine_learn/linear_regression/artificial1d.csv", delimiter=',')
+data_from_artificial1d = np.genfromtxt(u"/home/rafaelfacundo/Documents/machine_learn/lista_01_ama/artificial1d.csv", delimiter=',')
 
 
 column_x_from_data = data_from_artificial1d[:, 0]  # Coluna x, os valores de entrada

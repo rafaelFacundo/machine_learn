@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #reading data from the dataset
-data_from_artificial1d = np.genfromtxt(u"/home/rafaelfacundo/Documents/machine_learn/linear_regression/artificial1d.csv", delimiter=',')
+data_from_artificial1d = np.genfromtxt(u"/home/rafaelfacundo/Documents/machine_learn/lista_01_ama/artificial1d.csv", delimiter=',')
 
 alpha  = float(input("Type the learning rate: ")); # alpha is the learning rate of our model
 epochs = int(input("Type the number of iterations(epochs): ")) # number of iterations
