@@ -34,16 +34,17 @@ def createXiMatriceByPolinomialDegree(columnXi, degree):
     return newXiMatrice
 
 def createNewXMatrice(dataMatrice, degree):
-    X_matrice = np.array([]);
-    columnsOfDataMatrice = dataMatrice.shape[1];
+    X_matrice = np.empty((0, dataMatrice.shape[0]))
+    columnsOfDataMatrice = dataMatrice.shape[1]
     for column in range(columnsOfDataMatrice):
+        print(column)
         Xi_column = dataMatrice[:,column];
         newMatriceFromXiColumn = createXiMatriceByPolinomialDegree(Xi_column, degree);
-        print(newMatriceFromXiColumn)
-        print("++++")
-        X_matrice = np.concatenate((X_matrice, newMatriceFromXiColumn.T))
+        X_matrice = np.vstack((X_matrice, newMatriceFromXiColumn.T))
+       
+   
     return X_matrice;
 
-X = createNewXMatrice(data_from_california, 1)
+X = createNewXMatrice(inputValues, 1)
 
 print(X)
