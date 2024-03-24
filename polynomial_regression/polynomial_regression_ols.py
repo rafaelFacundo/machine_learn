@@ -1,9 +1,9 @@
 import numpy as np
 
-data_from_artificial1d = np.genfromtxt(u"/home/rafaelfacundo/Documents/machine_learn/lista_01_ama/california.csv", delimiter=',')
-inputValues = data_from_artificial1d[:, 0:7];
-Yvalues = data_from_artificial1d[:, 8]
-print(Yvalues)
+data_from_california = np.genfromtxt(u"/home/rafaelfacundo/Documents/machine_learn/lista_01_ama/california.csv", delimiter=',')
+inputValues = data_from_california[:, 0:7];
+Yvalues = data_from_california[:, 8]
+""" print(Yvalues)
 #adding a column of ones in the input tables
 #this is the artficial ones to match with the numbers of parameters
 #this one will be on the side of W0
@@ -17,6 +17,33 @@ trainIndices = np.random.choice(dataTable.shape[0], lengthOfTheTrainSet, replace
 #Now getting the train set
 trainSet = dataTable[trainIndices];
 X = trainSet;
-Xtranspose = X.T;
+Xtranspose = X.T; """
 
+""" 
+    In this algorithm we will use OSL, but first we will make some modifications on the X matrice
 
+"""
+
+def createXiMatriceByPolinomialDegree(columnXi, degree):
+    #adding a column of 1 (ones) 
+    columnOfOnes = np.ones((columnXi.shape[0], 1));
+    newXiMatrice = np.hstack((columnOfOnes, columnXi.reshape((columnXi.shape[0],1))));
+    for p in range(2, degree + 1):
+        columnXiRaisedToPowerP = columnXi ** p;
+        newXiMatrice = np.hstack((newXiMatrice, columnXiRaisedToPowerP));
+    return newXiMatrice
+
+def createNewXMatrice(dataMatrice, degree):
+    X_matrice = np.array([]);
+    columnsOfDataMatrice = dataMatrice.shape[1];
+    for column in range(columnsOfDataMatrice):
+        Xi_column = dataMatrice[:,column];
+        newMatriceFromXiColumn = createXiMatriceByPolinomialDegree(Xi_column, degree);
+        print(newMatriceFromXiColumn)
+        print("++++")
+        X_matrice = np.concatenate((X_matrice, newMatriceFromXiColumn.T))
+    return X_matrice;
+
+X = createNewXMatrice(data_from_california, 1)
+
+print(X)
