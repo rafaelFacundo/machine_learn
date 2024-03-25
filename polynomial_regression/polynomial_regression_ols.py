@@ -1,50 +1,44 @@
 import numpy as np
 
 data_from_california = np.genfromtxt(u"/home/rafaelfacundo/Documents/machine_learn/lista_01_ama/california.csv", delimiter=',')
-inputValues = data_from_california[:, 0:7];
-Yvalues = data_from_california[:, 8]
-""" print(Yvalues)
-#adding a column of ones in the input tables
-#this is the artficial ones to match with the numbers of parameters
-#this one will be on the side of W0
-column_of_ones = np.ones((inputValues.shape[0], 1));
-dataTable = np.hstack((column_of_ones, inputValues));
+
+def raise_columns(columnXi, degree):
+    #adding a column of 1 (ones) 
+    newColumns = columnXi.reshape((columnXi.shape[0], 1))
+    for p in range(2, degree + 1):
+        columnXiRaisedToPowerP = np.power(columnXi,p);
+        newColumns = np.hstack((newColumns, columnXiRaisedToPowerP.reshape((columnXi.shape[0], 1))));
+    return newColumns
+
+def create_x_matrice(dataMatrice, degree):
+    X = np.ones((dataMatrice.shape[0], 1));
+    numberOfColumns = dataMatrice.shape[1];
+    for col in range(numberOfColumns):
+        newColumnsRaisedToPowerP = raise_columns(dataMatrice[:,col], degree)
+        X = np.hstack((X, newColumnsRaisedToPowerP));
+    return X
+
 # now I gonna take 80% of the data to make the train set
 # I will choice each data in an aleatory way
-lengthOfTheTrainSet = int(0.8 * dataTable.shape[0]);
-#generating aleatory indices to the train set
-trainIndices = np.random.choice(dataTable.shape[0], lengthOfTheTrainSet, replace=False);
-#Now getting the train set
-trainSet = dataTable[trainIndices];
-X = trainSet;
-Xtranspose = X.T; """
+testSetSize = int(0.2 * data_from_california.shape[0])  
+testIndices = np.random.choice(data_from_california.shape[0], testSetSize, replace=False)
+conjunto_teste = data_from_california[testIndices]
+trainSet = np.delete(data_from_california, testIndices, axis=0)
 
-""" 
-    In this algorithm we will use OSL, but first we will make some modifications on the X matrice
+inputValues = trainSet[:, 0:8];
+Yvalues = trainSet[:,8];
 
-"""
+print(inputValues)
+print("=====================")
 
-def createXiMatriceByPolinomialDegree(columnXi, degree):
-    #adding a column of 1 (ones) 
-    columnOfOnes = np.ones((columnXi.shape[0], 1));
-    newXiMatrice = np.hstack((columnOfOnes, columnXi.reshape((columnXi.shape[0],1))));
-    for p in range(2, degree + 1):
-        columnXiRaisedToPowerP = columnXi ** p;
-        newXiMatrice = np.hstack((newXiMatrice, columnXiRaisedToPowerP));
-    return newXiMatrice
-
-def createNewXMatrice(dataMatrice, degree):
-    X_matrice = np.empty((0, dataMatrice.shape[0]))
-    columnsOfDataMatrice = dataMatrice.shape[1]
-    for column in range(columnsOfDataMatrice):
-        print(column)
-        Xi_column = dataMatrice[:,column];
-        newMatriceFromXiColumn = createXiMatriceByPolinomialDegree(Xi_column, degree);
-        X_matrice = np.vstack((X_matrice, newMatriceFromXiColumn.T))
-       
-   
-    return X_matrice;
-
-X = createNewXMatrice(inputValues, 1)
-
+X = create_x_matrice(trainSet, 2)
 print(X)
+
+X_transpose = np.transpose(X)
+X_transposeTimesX = X_transpose @ X;
+indentityMatrice = np.identity(X_transposeTimesX.shape[0]) * 0.0001;
+X_transposeTimesX = np.add(X_transposeTimesX,indentityMatrice);
+W = np.linalg.inv(X_transposeTimesX) @ X_transpose @ Yvalues; 
+
+print("vector w: ")
+print(W)
