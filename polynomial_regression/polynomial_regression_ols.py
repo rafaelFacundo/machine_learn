@@ -1,6 +1,6 @@
 import numpy as np
 
-data_from_california = np.genfromtxt(u"/home/rafaelfacundo/Documents/machine_learn/lista_01_ama/california.csv", delimiter=',')
+data_from_california = np.genfromtxt(u"/home/rafael/Documents/machine_learn/lista_01_ama/california.csv", delimiter=',')
 
 def raise_columns(columnXi, degree):
     #adding a column of 1 (ones) 
@@ -21,6 +21,8 @@ def create_x_matrice(dataMatrice, degree):
 def normalization_minMax(xMatrice, numberOfColumns):
     X = xMatrice;
     print(X.shape)
+    if numberOfColumns == 1:
+        X = X.reshape((xMatrice.shape[0], 1))
     for col in range(numberOfColumns):
         maximum = X[:,col].max()
         minimum = X[:,col].min()
@@ -49,17 +51,11 @@ trainSet = np.delete(data_from_california, testIndices, axis=0)
 inputValues = trainSet[:, 0:8];
 Yvalues = trainSet[:,8];
 
-inputValues = normalization_minMax(inputValues)
-# yValuesNormalized = normalization_minMax(Yvalues)
-print(trainSet.shape)
-print(inputValues.shape);
-print("NORMALIZED VALUES +++++++++")
+inputValues = normalization_minMax(inputValues, inputValues.shape[1])
+yValuesNormalized = normalization_minMax(Yvalues, 1)
 
-
-
-
-""" X = create_x_matrice(trainsSetNormalized, 3)
-print(X) """
+X = create_x_matrice(inputValues, 3)
+print(X)
 
 X_transpose = np.transpose(X)
 X_transposeTimesX = X_transpose @ X;

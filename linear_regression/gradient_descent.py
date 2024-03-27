@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #reading data from the dataset
-data_from_artificial1d = np.genfromtxt(u"/home/rafaelfacundo/Documents/machine_learn/lista_01_ama/artificial1d.csv", delimiter=',')
+data_from_artificial1d = np.genfromtxt(u"/home/rafael/Documents/machine_learn/lista_01_ama/artificial1d.csv", delimiter=',')
 
 alpha  = float(input("Type the learning rate: ")); # alpha is the learning rate of our model
 epochs = int(input("Type the number of iterations(epochs): ")) # number of iterations
@@ -17,6 +17,19 @@ for t in range(epochs):
     w_zero = w_zero + alpha * (np.sum(e_i) / N);
     e_i_times_column_x = e_i * column_x_from_data;
     w_one  = w_one + alpha * (np.sum(e_i_times_column_x) / N)
+
+
+plt.scatter(column_x_from_data, column_y_from_data)
+plt.plot(y_hat)
+
+# Adicionando rótulos e título
+plt.xlabel('Entradas (x)')
+plt.ylabel('Saídas (y)')
+plt.title('Gráfico de Pontos')
+
+# Exibindo o gráfico
+plt.show()
+
 
 print("w0: ", w_zero);
 print("W1: ", w_one)
