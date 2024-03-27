@@ -20,6 +20,7 @@ def create_x_matrice(dataMatrice, degree):
 
 def normalization_minMax(xMatrice):
     X = np.ones((xMatrice.shape[0], 1));
+    print(xMatrice.shape)
     for col in range(xMatrice.shape[1]):
         column = xMatrice[:,col];
         maximum = column.max()
@@ -27,6 +28,16 @@ def normalization_minMax(xMatrice):
         column = column + minimum
         column = column * (1/ (maximum - minimum))
         X = np.hstack((X, column.reshape((column.shape[0], 1))))
+    return X
+
+
+def standartZeroNormalization(xMatrice):
+    X = xMatrice
+    for col in range(X.shape[1]):
+        mean = X[:,col].mean()
+        X[:,col] -= mean
+        standarDeviation = np.std(X[:,col])
+        X[:,col] *= (1/standarDeviation)
     return X
 
 
@@ -40,15 +51,17 @@ trainSet = np.delete(data_from_california, testIndices, axis=0)
 inputValues = trainSet[:, 0:8];
 Yvalues = trainSet[:,8];
 
-inputNormalized = normalization_minMax(inputValues)
+inputValues = normalization_minMax(inputValues)
+# yValuesNormalized = normalization_minMax(Yvalues)
+print(trainSet.shape)
+print(inputValues.shape);
+print("NORMALIZED VALUES +++++++++")
 
-print(inputValues);
-print("+++++++++")
-print(inputNormalized);
-print("+++++++++")
 
-X = create_x_matrice(inputNormalized, 3)
-print(X)
+
+
+""" X = create_x_matrice(trainsSetNormalized, 3)
+print(X) """
 
 X_transpose = np.transpose(X)
 X_transposeTimesX = X_transpose @ X;
