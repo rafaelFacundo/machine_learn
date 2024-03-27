@@ -18,22 +18,20 @@ def create_x_matrice(dataMatrice, degree):
         X = np.hstack((X, newColumnsRaisedToPowerP));
     return X
 
-def normalization_minMax(xMatrice):
-    X = np.ones((xMatrice.shape[0], 1));
-    print(xMatrice.shape)
-    for col in range(xMatrice.shape[1]):
-        column = xMatrice[:,col];
-        maximum = column.max()
-        minimum = column.min()
-        column = column + minimum
-        column = column * (1/ (maximum - minimum))
-        X = np.hstack((X, column.reshape((column.shape[0], 1))))
+def normalization_minMax(xMatrice, numberOfColumns):
+    X = xMatrice;
+    print(X.shape)
+    for col in range(numberOfColumns):
+        maximum = X[:,col].max()
+        minimum = X[:,col].min()
+        X[:,col] += minimum
+        X[:,col] *= (1/ (maximum - minimum))
     return X
 
 
-def standartZeroNormalization(xMatrice):
+def standartZeroNormalization(xMatrice, numberOfColumns):
     X = xMatrice
-    for col in range(X.shape[1]):
+    for col in range(numberOfColumns):
         mean = X[:,col].mean()
         X[:,col] -= mean
         standarDeviation = np.std(X[:,col])
