@@ -12,11 +12,10 @@ def standartZeroNormalization(xMatrice, numberOfColumns):
         X[:,col] *= (1/standarDeviation)
     return X
 
-
 #reading data from the dataset
 data_from_artificial1d = np.genfromtxt(u"/home/rafaelfacundo/Documents/machine_learn/lista_01_ama/artificial1d.csv", delimiter=',')
 
-alpha  = 0.01 # alpha is the learning rate of our model
+alpha  = 0.001 # alpha is the learning rate of our model
 epochs = 600 # number of iterations
 w_zero = 0; # parameter of the model
 w_one  = 0; # parameter of the model
@@ -43,25 +42,22 @@ for t in range(epochs):
 print("w0: ", w_zero);
 print("W1: ", w_one)
 
-""" plt.scatter(column_x_from_data_normalized, column_y_from_data_normalized, color='blue', label='Dados de Treinamento')  
-plt.plot(column_x_from_data_normalized, w_zero + w_one * column_x_from_data_normalized, color='red', linewidth=2, label='Reta de Regressão') 
-plt.xlabel('Variável Independente')  
-plt.ylabel('Variável Dependente')
-plt.title('Regressão Linear') 
-plt.legend()  
-plt.grid(True)  
-plt.show() 
+fig, (ax1, ax2) = plt.subplots(2)
 
-print("w0:", w_zero)
-print("w1:", w_one) """
+ax1.scatter(column_x_from_data_normalized, column_y_from_data_normalized, color='blue', label='Dados de Treinamento')  
+ax1.plot(column_x_from_data_normalized, w_zero + w_one * column_x_from_data_normalized, color='red', linewidth=2, label='Reta de Regressão') 
+ax1.set_xlabel('Variável Independente')  
+ax1.set_ylabel('Variável Dependente')
+ax1.set_title('Regressão Linear') 
+ax1.legend()
+ax1.grid(True)
 
+ax2.plot(range(1, epochs + 1), error_history)
+ax2.set_xlabel('Épocas')
+ax2.set_ylabel('Erro Quadrático Médio (MSE)')
+ax2.set_title('Curva de Convergência da Regressão Linear')
+ax2.grid(True)
 
-plt.plot(range(1, epochs + 1), error_history)
-plt.xlabel('Épocas')
-plt.ylabel('Erro Quadrático Médio (MSE)')
-plt.title('Curva de Convergência da Regressão Linear')
-plt.grid(True)
-plt.show() 
+plt.tight_layout()
 
-print("w0:", w_zero)
-print("w1:", w_one)
+plt.show()
